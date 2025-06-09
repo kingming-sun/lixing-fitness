@@ -1,0 +1,65 @@
+.black-friday-banner {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 15px 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.banner-content h2 {
+  margin: 0 0 15px 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 15px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.time-number {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.time-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .banner-content h2 {
+    font-size: 1.2rem;
+  }
+  
+  .time-number {
+    font-size: 1.5rem;
+  }
+  
+  .countdown {
+    gap: 10px;
+  }
+  
+  .time-unit {
+    padding: 8px 12px;
+  }
+} 
