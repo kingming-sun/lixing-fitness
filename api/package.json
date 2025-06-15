@@ -1,0 +1,11 @@
+{
+  "name": "lixing-fitness-api",
+  "version": "1.0.0",
+  "description": "Lixing Fitness API for Vercel",
+  "main": "index.js",
+  "dependencies": {
+    "stripe": "^14.0.0",
+    "mongoose": "^8.0.0",
+    "mongodb": "^6.0.0"
+  }
+} 

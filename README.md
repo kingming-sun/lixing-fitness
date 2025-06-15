@@ -1,6 +1,21 @@
 # Lixing Fitness - 全栈健身训练平台
 
-这是一个基于 React + Node.js 的全栈健身训练平台，提供完整的商品管理、用户认证、支付处理等功能。
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/kingming-sun/lixing-fitness)
+
+这是一个基于 React + Node.js 的全栈健身训练平台，提供完整的商品管理、用户认证、支付处理等功能。现已优化支持 **Vercel 一键部署**。
+
+## 🚀 快速部署
+
+### Vercel 部署（推荐）
+
+1. 点击上方 "Deploy with Vercel" 按钮
+2. 连接你的 GitHub 账户
+3. 配置环境变量（见 [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)）
+4. 点击部署
+
+### 本地开发
+
+详见下方 [安装和运行](#🛠️-安装和运行) 部分
 
 ## 🚀 功能特点
 
