@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
-import { LanguageContext } from './BlackFridayBanner';
+import { LanguageContext } from '../layout/BlackFridayBanner';
 import './ProgramsSection.css';
 
 const ProgramsSection = () => {

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { LanguageContext } from './BlackFridayBanner';
+import { LanguageContext } from '../layout/BlackFridayBanner';
 import './HeroSection.css';
 
 const HeroSection = () => {

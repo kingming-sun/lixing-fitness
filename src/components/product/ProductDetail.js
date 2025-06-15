@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaStar, FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
-import { LanguageContext } from './BlackFridayBanner';
-import StripeCheckout from './StripeCheckout';
+import { LanguageContext } from '../layout/BlackFridayBanner';
+import StripeCheckout from '../payment/StripeCheckout';
 import './ProductDetail.css';
 
 const ProductDetail = () => {

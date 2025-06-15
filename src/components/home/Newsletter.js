@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
-import { LanguageContext } from './BlackFridayBanner';
+import { LanguageContext } from '../layout/BlackFridayBanner';
 import './Newsletter.css';
 
 const Newsletter = () => {
