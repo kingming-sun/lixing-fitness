@@ -21,19 +21,6 @@ export const LanguageProvider = ({ children }) => {
 const BlackFridayBanner = () => {
   const { language, toggleLanguage } = useContext(LanguageContext);
 
-  const text = {
-    zh: {
-      title: '健身训练项目',
-      subtitle: '专业力量训练课程 - 立即开始你的健身之旅！',
-      button: '开始训练'
-    },
-    en: {
-      title: 'Fitness Training Programs',
-      subtitle: 'Professional Strength Training Programs - Start Your Fitness Journey Now!',
-      button: 'Start Training'
-    }
-  };
-
   return (
     <div className="black-friday-banner">
       <div className="banner-content">
@@ -42,11 +29,6 @@ const BlackFridayBanner = () => {
           onClick={toggleLanguage}
         >
           {language === 'zh' ? 'EN' : '中'}
-        </button>
-        <h2>{text[language].title}</h2>
-        <p>{text[language].subtitle}</p>
-        <button className="cta-button">
-          {text[language].button}
         </button>
       </div>
     </div>
