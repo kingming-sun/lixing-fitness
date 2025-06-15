@@ -1,13 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaStar, FaArrowLeft } from 'react-icons/fa';
+import { FaStar, FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
 import { LanguageContext } from './BlackFridayBanner';
+import StripeCheckout from './StripeCheckout';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentData, setPaymentData] = useState(null);
 
   const text = {
     zh: {
@@ -16,16 +20,21 @@ const ProductDetail = () => {
       liftingFrequency: '训练频率',
       type: '类型',
       buyNow: '立即购买',
-      addToCart: '加入购物车',
       keyFeatures: '主要特色',
       back: '返回',
       reviews: '用户评价',
-      addReview: '添加评价',
       rated: '评分',
       outOf: '满分',
       weeks: '周',
       months: '月',
-      daysWeekly: '天/周'
+      daysWeekly: '天/周',
+      paymentSuccess: '支付成功！',
+      paymentSuccessMessage: '感谢您的购买！您将收到包含课程详情的确认邮件。',
+      orderNumber: '订单号',
+      amount: '支付金额',
+      continueShopping: '继续购物',
+      paymentError: '支付失败',
+      tryAgain: '重试'
     },
     en: {
       overview: 'Overview',
@@ -33,16 +42,21 @@ const ProductDetail = () => {
       liftingFrequency: 'Overall Lifting Frequency',
       type: 'Type',
       buyNow: 'Buy Now',
-      addToCart: 'Add to cart',
       keyFeatures: 'Key Features',
       back: 'Back',
       reviews: 'Reviews',
-      addReview: 'Add a review',
       rated: 'Rated',
       outOf: 'out of',
       weeks: 'Weeks',
       months: 'Months',
-      daysWeekly: 'Days/Weekly'
+      daysWeekly: 'Days/Weekly',
+      paymentSuccess: 'Payment Successful!',
+      paymentSuccessMessage: 'Thank you for your purchase! You will receive a confirmation email with program details.',
+      orderNumber: 'Order Number',
+      amount: 'Amount Paid',
+      continueShopping: 'Continue Shopping',
+      paymentError: 'Payment Failed',
+      tryAgain: 'Try Again'
     }
   };
 
@@ -128,8 +142,62 @@ const ProductDetail = () => {
   };
 
   const handlePurchase = () => {
-    alert(language === 'zh' ? '跳转到购买页面...' : 'Redirecting to purchase...');
+    setShowCheckout(true);
   };
+
+  const handlePaymentSuccess = (paymentIntent) => {
+    setPaymentData(paymentIntent);
+    setShowCheckout(false);
+    setPaymentSuccess(true);
+  };
+
+  const handlePaymentError = (error) => {
+    console.error('Payment failed:', error);
+    alert(text[language].paymentError + ': ' + error.message);
+    setShowCheckout(false);
+  };
+
+  const handlePaymentCancel = () => {
+    setShowCheckout(false);
+  };
+
+  const handleContinueShopping = () => {
+    setPaymentSuccess(false);
+    setPaymentData(null);
+    navigate('/');
+  };
+
+  // 支付成功页面
+  if (paymentSuccess && paymentData) {
+    return (
+      <div className="product-detail">
+        <div className="container">
+          <div className="payment-success">
+            <div className="success-content">
+              <FaCheckCircle className="success-icon" />
+              <h1>{text[language].paymentSuccess}</h1>
+              <p>{text[language].paymentSuccessMessage}</p>
+              
+              <div className="payment-details">
+                <div className="detail-item">
+                  <span className="label">{text[language].orderNumber}:</span>
+                  <span className="value">{paymentData.id}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="label">{text[language].amount}:</span>
+                  <span className="value">${(paymentData.amount / 100).toFixed(2)}</span>
+                </div>
+              </div>
+
+              <button className="continue-shopping-btn" onClick={handleContinueShopping}>
+                {text[language].continueShopping}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="product-detail">
@@ -216,6 +284,16 @@ const ProductDetail = () => {
           </section>
         </div>
       </div>
+
+      {/* Stripe 结账模态框 */}
+      {showCheckout && (
+        <StripeCheckout
+          product={product}
+          onSuccess={handlePaymentSuccess}
+          onError={handlePaymentError}
+          onCancel={handlePaymentCancel}
+        />
+      )}
     </div>
   );
 };

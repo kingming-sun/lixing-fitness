@@ -257,6 +257,110 @@
   margin: 0;
 }
 
+/* 支付成功页面样式 */
+.payment-success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 40px 0;
+}
+
+.success-content {
+  text-align: center;
+  background: white;
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: #28a745;
+  margin-bottom: 25px;
+  animation: successPulse 1.5s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-content h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.success-content p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.payment-details {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.detail-item:last-child {
+  margin-bottom: 0;
+  padding-top: 15px;
+  border-top: 2px solid #007bff;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.detail-item .label {
+  color: #666;
+}
+
+.detail-item .value {
+  color: #333;
+  font-weight: 600;
+}
+
+.continue-shopping-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.continue-shopping-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .product-header {
@@ -289,5 +393,28 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+
+  .success-content {
+    padding: 30px 25px;
+    margin: 0 10px;
+  }
+
+  .success-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .success-icon {
+    font-size: 3rem;
+  }
+
+  .payment-details {
+    padding: 20px;
+  }
+
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
   }
 } 
