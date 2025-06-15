@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { LanguageContext } from './BlackFridayBanner';
-import stripePromise from '../utils/stripe';
+import { LanguageContext } from '../layout/BlackFridayBanner';
+import stripePromise from '../../utils/stripe';
 import './StripeCheckout.css';
 
 // 支付表单组件
