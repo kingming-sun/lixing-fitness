@@ -1,115 +1,62 @@
 import React, { useState, useContext } from 'react';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom';
 import { LanguageContext } from '../layout/BlackFridayBanner';
-import stripePromise from '../../utils/stripe';
+import { createCheckoutSession } from '../../utils/stripe';
 import './StripeCheckout.css';
 
-// 支付表单组件
-const CheckoutForm = ({ product, onSuccess, onError, onCancel }) => {
-  const stripe = useStripe();
-  const elements = useElements();
+const StripeCheckout = ({ product, onSuccess, onError, onCancel }) => {
   const { language } = useContext(LanguageContext);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
-    name: '',
     email: '',
-    address: {
-      line1: '',
-      city: '',
-      state: '',
-      postal_code: '',
-      country: 'US'
-    }
+    name: ''
   });
 
   const text = {
     zh: {
-      title: '支付信息',
-      name: '姓名',
-      email: '邮箱',
-      address: '地址',
-      city: '城市',
-      state: '州/省',
-      postalCode: '邮政编码',
-      country: '国家',
-      cardInfo: '银行卡信息',
-      processing: '处理中...',
+      title: '安全支付',
+      subtitle: '使用Stripe安全支付系统',
+      email: '邮箱地址',
+      name: '姓名（可选）',
       payNow: '立即支付',
+      processing: '正在跳转到支付页面...',
       cancel: '取消',
-      nameRequired: '请输入姓名',
-      emailRequired: '请输入邮箱',
-      emailInvalid: '请输入有效的邮箱地址',
-      paymentFailed: '支付失败，请重试',
-      paymentSuccess: '支付成功！',
       orderSummary: '订单摘要',
-      total: '总计'
+      total: '总计',
+      securePayment: '🔒 安全支付',
+      supportedMethods: '支持信用卡、支付宝、微信支付等多种支付方式',
+      emailRequired: '请输入邮箱地址',
+      emailInvalid: '请输入有效的邮箱地址',
+      paymentError: '支付初始化失败，请重试'
     },
     en: {
-      title: 'Payment Information',
-      name: 'Full Name',
-      email: 'Email',
-      address: 'Address',
-      city: 'City',
-      state: 'State',
-      postalCode: 'Postal Code',
-      country: 'Country',
-      cardInfo: 'Card Information',
-      processing: 'Processing...',
+      title: 'Secure Payment',
+      subtitle: 'Powered by Stripe secure payment system',
+      email: 'Email Address',
+      name: 'Full Name (Optional)',
       payNow: 'Pay Now',
+      processing: 'Redirecting to payment page...',
       cancel: 'Cancel',
-      nameRequired: 'Please enter your name',
-      emailRequired: 'Please enter your email',
-      emailInvalid: 'Please enter a valid email address',
-      paymentFailed: 'Payment failed, please try again',
-      paymentSuccess: 'Payment successful!',
       orderSummary: 'Order Summary',
-      total: 'Total'
+      total: 'Total',
+      securePayment: '🔒 Secure Payment',
+      supportedMethods: 'Supports credit cards, Alipay, WeChat Pay and more',
+      emailRequired: 'Please enter your email address',
+      emailInvalid: 'Please enter a valid email address',
+      paymentError: 'Failed to initialize payment, please try again'
     }
-  };
-
-  const cardElementOptions = {
-    style: {
-      base: {
-        fontSize: '16px',
-        color: '#424770',
-        '::placeholder': {
-          color: '#aab7c4',
-        },
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      },
-      invalid: {
-        color: '#9e2146',
-      },
-    },
-    hidePostalCode: true, // 我们会单独收集邮政编码
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
-    if (name.startsWith('address.')) {
-      const addressField = name.split('.')[1];
-      setCustomerInfo(prev => ({
-        ...prev,
-        address: {
-          ...prev.address,
-          [addressField]: value
-        }
-      }));
-    } else {
-      setCustomerInfo(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
+    setCustomerInfo(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const validateForm = () => {
-    if (!customerInfo.name.trim()) {
-      alert(text[language].nameRequired);
-      return false;
-    }
-    
     if (!customerInfo.email.trim()) {
       alert(text[language].emailRequired);
       return false;
@@ -124,53 +71,41 @@ const CheckoutForm = ({ product, onSuccess, onError, onCancel }) => {
     return true;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
+  const handleCheckout = async () => {
     if (!validateForm()) {
       return;
     }
 
-    setIsProcessing(true);
+    setIsLoading(true);
 
-    const cardElement = elements.getElement(CardElement);
-
-    // 在实际应用中，你需要调用你的后端API来创建PaymentIntent
-    // 这里我们模拟一个支付流程
     try {
-      // 模拟API调用延迟
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // 创建Stripe Checkout会话
+      const { sessionId, url } = await createCheckoutSession(
+        product.id,
+        1,
+        customerInfo
+      );
+
+      // 直接跳转到Stripe Checkout页面
+      window.location.href = url;
       
-      // 模拟支付成功（实际中需要调用Stripe的confirmCardPayment）
-      const mockPaymentResult = {
-        paymentIntent: {
-          id: 'pi_mock_' + Date.now(),
-          status: 'succeeded',
-          amount: Math.round(product.price * 100), // Stripe使用分为单位
-          currency: 'usd'
-        }
-      };
-
-      if (mockPaymentResult.paymentIntent.status === 'succeeded') {
-        onSuccess(mockPaymentResult.paymentIntent);
-      } else {
-        onError(new Error(text[language].paymentFailed));
-      }
     } catch (error) {
-      onError(error);
+      console.error('Checkout error:', error);
+      alert(text[language].paymentError + ': ' + error.message);
+      if (onError) {
+        onError(error);
+      }
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsProcessing(false);
   };
 
   return (
-    <div className="stripe-checkout">
+    <div className="stripe-checkout-modal">
+      <div className="checkout-overlay" onClick={onCancel}></div>
       <div className="checkout-container">
         <div className="checkout-content">
+          {/* 订单摘要 */}
           <div className="order-summary">
             <h3>{text[language].orderSummary}</h3>
             <div className="product-info">
@@ -188,81 +123,44 @@ const CheckoutForm = ({ product, onSuccess, onError, onCancel }) => {
             </div>
           </div>
 
+          {/* 支付表单 */}
           <div className="payment-form">
-            <h3>{text[language].title}</h3>
+            <div className="payment-header">
+              <h3>{text[language].title}</h3>
+              <p className="payment-subtitle">{text[language].subtitle}</p>
+            </div>
             
-            <form onSubmit={handleSubmit}>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>{text[language].name}</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={customerInfo.name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>{text[language].email}</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={customerInfo.email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
-
+            <form onSubmit={(e) => { e.preventDefault(); handleCheckout(); }}>
               <div className="form-group">
-                <label>{text[language].address}</label>
+                <label>{text[language].email} *</label>
                 <input
-                  type="text"
-                  name="address.line1"
-                  value={customerInfo.address.line1}
+                  type="email"
+                  name="email"
+                  value={customerInfo.email}
                   onChange={handleInputChange}
+                  required
+                  placeholder="your@email.com"
                 />
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label>{text[language].city}</label>
-                  <input
-                    type="text"
-                    name="address.city"
-                    value={customerInfo.address.city}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>{text[language].state}</label>
-                  <input
-                    type="text"
-                    name="address.state"
-                    value={customerInfo.address.state}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>{text[language].postalCode}</label>
-                  <input
-                    type="text"
-                    name="address.postal_code"
-                    value={customerInfo.address.postal_code}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              <div className="form-group">
+                <label>{text[language].name}</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={customerInfo.name}
+                  onChange={handleInputChange}
+                  placeholder="John Doe"
+                />
               </div>
 
-              <div className="form-group">
-                <label>{text[language].cardInfo}</label>
-                <div className="card-element-container">
-                  <CardElement options={cardElementOptions} />
+              <div className="payment-info">
+                <div className="secure-badge">
+                  {text[language].securePayment}
                 </div>
+                <p className="supported-methods">
+                  {text[language].supportedMethods}
+                </p>
               </div>
 
               <div className="form-actions">
@@ -270,7 +168,7 @@ const CheckoutForm = ({ product, onSuccess, onError, onCancel }) => {
                   type="button" 
                   className="cancel-btn"
                   onClick={onCancel}
-                  disabled={isProcessing}
+                  disabled={isLoading}
                 >
                   {text[language].cancel}
                 </button>
@@ -278,9 +176,9 @@ const CheckoutForm = ({ product, onSuccess, onError, onCancel }) => {
                 <button 
                   type="submit" 
                   className="pay-btn"
-                  disabled={!stripe || isProcessing}
+                  disabled={isLoading}
                 >
-                  {isProcessing 
+                  {isLoading 
                     ? text[language].processing 
                     : `${text[language].payNow} $${product.price.toFixed(2)}`
                   }
@@ -291,20 +189,6 @@ const CheckoutForm = ({ product, onSuccess, onError, onCancel }) => {
         </div>
       </div>
     </div>
-  );
-};
-
-// 主要的Stripe结账组件
-const StripeCheckout = ({ product, onSuccess, onError, onCancel }) => {
-  return (
-    <Elements stripe={stripePromise}>
-      <CheckoutForm 
-        product={product}
-        onSuccess={onSuccess}
-        onError={onError}
-        onCancel={onCancel}
-      />
-    </Elements>
   );
 };
 

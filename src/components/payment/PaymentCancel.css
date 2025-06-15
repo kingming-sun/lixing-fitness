@@ -1,0 +1,264 @@
+/* Payment Cancel Page Styles */
+.payment-cancel {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.payment-cancel .container {
+  max-width: 700px;
+  width: 100%;
+}
+
+.cancel-content {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cancel-header {
+  margin-bottom: 40px;
+}
+
+.cancel-icon {
+  font-size: 80px;
+  color: #dc3545;
+  margin-bottom: 20px;
+  animation: shakeIn 0.8s ease-out;
+}
+
+@keyframes shakeIn {
+  0% {
+    transform: scale(0.3) rotate(-10deg);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1.1) rotate(5deg);
+  }
+  50% {
+    transform: scale(0.9) rotate(-3deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.cancel-content h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 10px 0;
+}
+
+.cancel-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.cancel-message {
+  margin: 30px 0;
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #ffc107;
+}
+
+.cancel-message p {
+  margin: 0;
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.reasons-section {
+  margin: 30px 0;
+  text-align: left;
+  background: #fff3cd;
+  border-radius: 12px;
+  padding: 25px;
+  border: 1px solid #ffeaa7;
+}
+
+.reasons-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #856404;
+  margin: 0 0 15px 0;
+  text-align: center;
+}
+
+.reasons-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reasons-list li {
+  padding: 8px 0;
+  color: #856404;
+  font-size: 14px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.reasons-list li:before {
+  content: "•";
+  color: #f39c12;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.try-again-btn,
+.home-btn,
+.support-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.try-again-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.try-again-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.home-btn {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.home-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.support-btn {
+  background: #28a745;
+  color: white;
+}
+
+.support-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payment-cancel {
+    padding: 15px;
+  }
+
+  .cancel-content {
+    padding: 40px 25px;
+    border-radius: 16px;
+  }
+
+  .cancel-content h1 {
+    font-size: 28px;
+  }
+
+  .cancel-icon {
+    font-size: 60px;
+  }
+
+  .cancel-message,
+  .reasons-section {
+    padding: 20px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .try-again-btn,
+  .home-btn,
+  .support-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cancel-content {
+    padding: 30px 20px;
+  }
+
+  .cancel-content h1 {
+    font-size: 24px;
+  }
+
+  .cancel-subtitle {
+    font-size: 16px;
+  }
+
+  .cancel-message,
+  .reasons-section {
+    padding: 15px;
+  }
+
+  .try-again-btn,
+  .home-btn,
+  .support-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+
+  .reasons-section h3 {
+    font-size: 16px;
+  }
+
+  .reasons-list li {
+    font-size: 13px;
+  }
+} 

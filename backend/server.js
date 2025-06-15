@@ -11,6 +11,7 @@ const connectDB = require('./config/database');
 // 路由文件
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
+const paymentRoutes = require('./routes/payments');
 
 // 连接数据库
 connectDB();
@@ -42,6 +43,9 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
+// Webhook路由需要原始请求体，所以要在JSON解析之前
+app.use('/api/payments/webhook', paymentRoutes);
+
 // Body解析中间件
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -52,6 +56,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // API路由
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // 健康检查端点
 app.get('/api/health', (req, res) => {
@@ -108,6 +113,7 @@ const server = app.listen(PORT, () => {
 📡 端口: ${PORT}
 🌐 API地址: http://localhost:${PORT}/api
 📁 上传目录: ${path.join(__dirname, 'uploads')}
+💳 支付API: http://localhost:${PORT}/api/payments
   `);
 });
 

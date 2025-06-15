@@ -4,6 +4,7 @@ import './App.css';
 import { Header, Footer, BlackFridayBanner } from './components/layout';
 import { HeroSection, ProgramsSection, ProgramRecommender, Newsletter } from './components/home';
 import { ProductDetail } from './components/product';
+import { PaymentSuccess, PaymentCancel } from './components/payment';
 import { LanguageProvider } from './components/layout/BlackFridayBanner';
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
               </>
             } />
             <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="/payment/cancel" element={<PaymentCancel />} />
           </Routes>
           <Footer />
         </div>
