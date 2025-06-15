@@ -1,15 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { FaStar } from 'react-icons/fa';
+import { LanguageContext } from './BlackFridayBanner';
 import './ProgramsSection.css';
 
 const ProgramsSection = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const programsPerPage = 12;
+  const { language } = useContext(LanguageContext);
+
+  const text = {
+    zh: {
+      rated: '评分',
+      outOf: '满分',
+      selectOptions: '选择选项',
+      addToCart: '加入购物车',
+      new: '新品',
+      sale: '促销'
+    },
+    en: {
+      rated: 'Rated',
+      outOf: 'out of',
+      selectOptions: 'Select options',
+      addToCart: 'Add to cart',  
+      new: 'NEW',
+      sale: 'Sale!'
+    }
+  };
 
   const programs = [
     {
       id: 1,
-      name: "Jamal Browner's The Powerlifter Vol. 1",
+      name: {
+        zh: "贾马尔·布朗纳的力量举训练 第1卷",
+        en: "Jamal Browner's The Powerlifter Vol. 1"
+      },
       price: 59.99,
       rating: 4.33,
       isNew: true,
@@ -17,7 +41,10 @@ const ProgramsSection = () => {
     },
     {
       id: 2,
-      name: "Rondel Hunte's The Total Specialist",
+      name: {
+        zh: "朗德尔·亨特的全能专家训练",
+        en: "Rondel Hunte's The Total Specialist"
+      },
       price: 59.99,
       rating: 4.92,
       isNew: true,
@@ -25,7 +52,10 @@ const ProgramsSection = () => {
     },
     {
       id: 3,
-      name: "SSTT's 3 Day Strength",
+      name: {
+        zh: "SSTT 3日力量训练",
+        en: "SSTT's 3 Day Strength"
+      },
       price: 29.99,
       rating: 4.75,
       isNew: true,
@@ -33,7 +63,10 @@ const ProgramsSection = () => {
     },
     {
       id: 4,
-      name: "SSTT's Weight Gain & Lean Mass System",
+      name: {
+        zh: "SSTT 增重增肌系统",
+        en: "SSTT's Weight Gain & Lean Mass System"
+      },
       price: 99.99,
       rating: 5.00,
       isNew: true,
@@ -41,7 +74,10 @@ const ProgramsSection = () => {
     },
     {
       id: 5,
-      name: "Jamal Browner's 12 Week Intermediate Vol. 5",
+      name: {
+        zh: "贾马尔·布朗纳12周中级训练 第5卷",
+        en: "Jamal Browner's 12 Week Intermediate Vol. 5"
+      },
       price: 59.99,
       rating: 5.00,
       isNew: false,
@@ -49,7 +85,10 @@ const ProgramsSection = () => {
     },
     {
       id: 6,
-      name: "SSTT's Fat Loss & Body Recomp System",
+      name: {
+        zh: "SSTT 减脂塑形系统",
+        en: "SSTT's Fat Loss & Body Recomp System"
+      },
       price: 99.99,
       rating: 5.00,
       isNew: true,
@@ -57,7 +96,10 @@ const ProgramsSection = () => {
     },
     {
       id: 7,
-      name: "SSTT's Bodybuilding Upper Lower + Shoulders & Arms",
+      name: {
+        zh: "SSTT 健美上下肢+肩臂训练",
+        en: "SSTT's Bodybuilding Upper Lower + Shoulders & Arms"
+      },
       price: 39.99,
       rating: 5.00,
       isNew: false,
@@ -65,7 +107,10 @@ const ProgramsSection = () => {
     },
     {
       id: 8,
-      name: "Jamal Browner's Deadlift Specialization Vol. 3",
+      name: {
+        zh: "贾马尔·布朗纳硬拉专项训练 第3卷",
+        en: "Jamal Browner's Deadlift Specialization Vol. 3"
+      },
       priceRange: "$49.99 – $69.99",
       rating: 5.00,
       isNew: true,
@@ -74,7 +119,10 @@ const ProgramsSection = () => {
     },
     {
       id: 9,
-      name: "Discount Bundle - Any 2 Programs",
+      name: {
+        zh: "优惠套餐 - 任选2个课程",
+        en: "Discount Bundle - Any 2 Programs"
+      },
       originalPrice: 44.98,
       price: 27.98,
       isNew: true,
@@ -83,7 +131,10 @@ const ProgramsSection = () => {
     },
     {
       id: 10,
-      name: "Jacked & Strong Program Bundle",
+      name: {
+        zh: "健美力量套餐",
+        en: "Jacked & Strong Program Bundle"
+      },
       originalPrice: 84.97,
       price: 49.48,
       isNew: true,
@@ -92,7 +143,10 @@ const ProgramsSection = () => {
     },
     {
       id: 11,
-      name: "SSTT's Bodybuilding Push Pull Legs",
+      name: {
+        zh: "SSTT 健美推拉腿训练",
+        en: "SSTT's Bodybuilding Push Pull Legs"  
+      },
       price: 39.99,
       rating: 5.00,
       isNew: false,
@@ -100,7 +154,10 @@ const ProgramsSection = () => {
     },
     {
       id: 12,
-      name: "The Godfather Program Bundle (LIMITED)",
+      name: {
+        zh: "教父课程套餐 (限量版)",
+        en: "The Godfather Program Bundle (LIMITED)"
+      },
       originalPrice: 239.99,
       price: 149.99,
       rating: 4.86,
@@ -138,24 +195,24 @@ const ProgramsSection = () => {
         <div className="programs-grid">
           {currentPrograms.map(program => (
             <div key={program.id} className="program-card">
-              {program.isNew && <span className="new-badge">NEW</span>}
-              {program.isOnSale && <span className="sale-badge">Sale!</span>}
+              {program.isNew && <span className="new-badge">{text[language].new}</span>}
+              {program.isOnSale && <span className="sale-badge">{text[language].sale}</span>}
               
               <div className="program-image">
-                <img src={program.image} alt={program.name} />
+                <img src={program.image} alt={program.name[language]} />
               </div>
               
               <div className="program-content">
-                <h3 className="program-title">{program.name}</h3>
+                <h3 className="program-title">{program.name[language]}</h3>
                 
                 {program.rating && (
                   <div className="program-rating">
-                    <span className="rating-text">Rated</span>
+                    <span className="rating-text">{text[language].rated}</span>
                     <div className="stars">
                       {renderStars(program.rating)}
                     </div>
                     <span className="rating-number"><strong>{program.rating.toFixed(2)}</strong></span>
-                    <span className="rating-text">out of 5</span>
+                    <span className="rating-text">{text[language].outOf} 5</span>
                   </div>
                 )}
                 
@@ -172,9 +229,9 @@ const ProgramsSection = () => {
                 
                 <div className="program-actions">
                   {program.hasOptions ? (
-                    <button className="select-options-btn">Select options</button>
+                    <button className="select-options-btn">{text[language].selectOptions}</button>
                   ) : (
-                    <button className="add-to-cart-btn">Add to cart</button>
+                    <button className="add-to-cart-btn">{text[language].addToCart}</button>
                   )}
                 </div>
               </div>

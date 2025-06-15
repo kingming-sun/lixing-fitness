@@ -1,60 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import './BlackFridayBanner.css';
 
+// 创建语言上下文
+export const LanguageContext = createContext();
+
+export const LanguageProvider = ({ children }) => {
+  const [language, setLanguage] = useState('zh'); // 默认中文
+
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === 'zh' ? 'en' : 'zh');
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, toggleLanguage }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
 const BlackFridayBanner = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+  const { language, toggleLanguage } = useContext(LanguageContext);
 
-  useEffect(() => {
-    // 设置一个未来的结束时间
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 7); // 7天后结束
-
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = targetDate.getTime() - now;
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+  const text = {
+    zh: {
+      title: '健身训练项目',
+      subtitle: '专业力量训练课程 - 立即开始你的健身之旅！',
+      button: '开始训练'
+    },
+    en: {
+      title: 'Fitness Training Programs',
+      subtitle: 'Professional Strength Training Programs - Start Your Fitness Journey Now!',
+      button: 'Start Training'
+    }
+  };
 
   return (
     <div className="black-friday-banner">
       <div className="banner-content">
-        <h2>Black Friday Sale Ends:</h2>
-        <div className="countdown">
-          <div className="time-unit">
-            <span className="time-number">{timeLeft.days}</span>
-            <span className="time-label">Days</span>
-          </div>
-          <div className="time-unit">
-            <span className="time-number">{timeLeft.hours}</span>
-            <span className="time-label">Hrs</span>
-          </div>
-          <div className="time-unit">
-            <span className="time-number">{timeLeft.minutes}</span>
-            <span className="time-label">Mins</span>
-          </div>
-          <div className="time-unit">
-            <span className="time-number">{timeLeft.seconds}</span>
-            <span className="time-label">Sec</span>
-          </div>
-        </div>
+        <button 
+          className="language-toggle"
+          onClick={toggleLanguage}
+        >
+          {language === 'zh' ? 'EN' : '中'}
+        </button>
+        <h2>{text[language].title}</h2>
+        <p>{text[language].subtitle}</p>
+        <button className="cta-button">
+          {text[language].button}
+        </button>
       </div>
     </div>
   );
