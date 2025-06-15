@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
 import { LanguageContext } from './BlackFridayBanner';
 import './ProgramsSection.css';
@@ -7,13 +8,14 @@ const ProgramsSection = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const programsPerPage = 12;
   const { language } = useContext(LanguageContext);
+  const navigate = useNavigate();
 
   const text = {
     zh: {
       rated: '评分',
       outOf: '满分',
       selectOptions: '选择选项',
-      addToCart: '加入购物车',
+      buyNow: '立即购买',
       new: '新品',
       sale: '促销'
     },
@@ -21,7 +23,7 @@ const ProgramsSection = () => {
       rated: 'Rated',
       outOf: 'out of',
       selectOptions: 'Select options',
-      addToCart: 'Add to cart',  
+      buyNow: 'Buy Now',  
       new: 'NEW',
       sale: 'Sale!'
     }
@@ -189,12 +191,25 @@ const ProgramsSection = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleProductClick = (programId) => {
+    navigate(`/product/${programId}`);
+  };
+
+  const handlePurchaseClick = (e, programId) => {
+    e.stopPropagation(); // 防止触发卡片点击事件
+    navigate(`/product/${programId}`);
+  };
+
   return (
     <section className="programs-section">
       <div className="programs-container">
         <div className="programs-grid">
           {currentPrograms.map(program => (
-            <div key={program.id} className="program-card">
+            <div 
+              key={program.id} 
+              className="program-card"
+              onClick={() => handleProductClick(program.id)}
+            >
               {program.isNew && <span className="new-badge">{text[language].new}</span>}
               {program.isOnSale && <span className="sale-badge">{text[language].sale}</span>}
               
@@ -229,9 +244,19 @@ const ProgramsSection = () => {
                 
                 <div className="program-actions">
                   {program.hasOptions ? (
-                    <button className="select-options-btn">{text[language].selectOptions}</button>
+                    <button 
+                      className="select-options-btn"
+                      onClick={(e) => handlePurchaseClick(e, program.id)}
+                    >
+                      {text[language].selectOptions}
+                    </button>
                   ) : (
-                    <button className="add-to-cart-btn">{text[language].addToCart}</button>
+                    <button 
+                      className="buy-now-btn"
+                      onClick={(e) => handlePurchaseClick(e, program.id)}
+                    >
+                      {text[language].buyNow}
+                    </button>
                   )}
                 </div>
               </div>

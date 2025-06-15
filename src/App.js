@@ -8,6 +8,7 @@ import ProgramsSection from './components/ProgramsSection';
 import ProgramRecommender from './components/ProgramRecommender';
 import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
+import ProductDetail from './components/ProductDetail';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
                 <Newsletter />
               </>
             } />
+            <Route path="/product/:id" element={<ProductDetail />} />
           </Routes>
           <Footer />
         </div>

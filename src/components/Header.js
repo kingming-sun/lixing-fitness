@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { LanguageContext } from './BlackFridayBanner';
 import './Header.css';
 
@@ -22,7 +22,6 @@ const Header = () => {
       testimonials: '见证',
       coaches: '教练',
       help: '帮助',
-      cart: '购物车',
       powerlifting: '力量举训练',
       physique: '体型塑造/减重',
       nutrition: '营养指导',
@@ -38,7 +37,6 @@ const Header = () => {
       testimonials: 'Testimonials',
       coaches: 'Coaches',
       help: 'Help',
-      cart: 'Cart',
       powerlifting: 'Powerlifting Coaching',
       physique: 'Physique / Weight Loss',
       nutrition: 'Nutrition',
@@ -94,11 +92,6 @@ const Header = () => {
         </nav>
 
         <div className="header-actions">
-          <div className="cart">
-            <FaShoppingCart />
-            <span className="cart-text">$0.00 0 {text[language].cart}</span>
-          </div>
-          
           <button className="menu-toggle" onClick={toggleMenu}>
             {isMenuOpen ? <FaTimes /> : <FaBars />}
           </button>
